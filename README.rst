@@ -2,11 +2,11 @@
  gajim-suspend-watcher
 =======================
 
-Fix for `Gajim IM <http://gajim.org/>`_ to disconnect accounts before machine suspend and reconnect them after machine resume.
+Fix for `Gajim IM <http://gajim.org/>`_ to reconnect them after machine resume.
 
 This was written for GNOME, but it could work also for other environments with UPower and NetworkManager.
 
-Note: Gajim 0.15+ now correctly disconnects accounts before suspend, but it does not still auto-reconnect after resume, so this script is still needed.
+Note: Gajim 0.15+ now correctly disconnects accounts before suspend, but it does not still auto-reconnect after resume, so this script is still needed and updated to reflect those changes.
 
 
 Usage
