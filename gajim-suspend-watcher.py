@@ -105,6 +105,9 @@ system_bus.add_signal_receiver(signal_name='PrepareForSleep', dbus_interface=log
 system_bus.add_signal_receiver(signal_name='StateChanged', dbus_interface=nm_int,
                                handler_function=connect)
 
+system_bus.add_signal_receiver(signal_name='PropertiesChanged', dbus_interface=nm_int,
+                               handler_function=connect)
+
 print 'Suspend monitoring started...'
 
 loop = gobject.MainLoop()
