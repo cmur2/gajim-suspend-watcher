@@ -31,6 +31,8 @@ upower_service = 'org.freedesktop.UPower'
 upower_obj = '/org/freedesktop/UPower'
 upower_int = 'org.freedesktop.UPower'
 
+logind_int = 'org.freedesktop.login1.Manager'
+
 nm_service = 'org.freedesktop.NetworkManager'
 nm_obj = '/org/freedesktop/NetworkManager'
 nm_int = 'org.freedesktop.NetworkManager'
@@ -56,11 +58,21 @@ def get_igajim():
         print >> sys.stderr, ex
         return None
 
+# from upowerd:
 def on_resume(*args, **kwargs):
     global should_connect
     print '%s: Resuming, now waiting for network to come up' % time.asctime()
     if not connect():
         should_connect = True
+
+# from logind:
+def on_sleep(suspended):
+    global should_connect
+
+    if not suspended:
+        print '%s: Resuming, now waiting for network to come up' % time.asctime()
+        if not connect():
+            should_connect = True
 
 def connect(*args, **kwargs):
     global should_connect, options
@@ -86,6 +98,9 @@ def connect(*args, **kwargs):
 
 system_bus.add_signal_receiver(signal_name='Resuming', dbus_interface=upower_int,
                                handler_function=on_resume)
+
+system_bus.add_signal_receiver(signal_name='PrepareForSleep', dbus_interface=logind_int,
+                               handler_function=on_sleep)
 
 system_bus.add_signal_receiver(signal_name='StateChanged', dbus_interface=nm_int,
                                handler_function=connect)
